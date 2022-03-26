@@ -1,24 +1,34 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { TextField } from "@mui/material"
 
-function App() {
+const App = () => {
+  const [valueA, setValueA] = React.useState("")
+  const [valueB, setValueB] = React.useState("")
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: "A" | "B") => {
+    switch (field) {
+      case "A":
+        return setValueA(event.target.value)
+      case "B":
+        return setValueB(event.target.value)
+    }
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>String utils</h1>
+      <div className='container'>
+        <div>
+          <h2>Liste A</h2>
+          <TextField value={valueA}
+            onChange={(event) => handleChange(event, "A")} multiline />
+        </div>
+        <div>
+          <h2>Liste B</h2>
+          <TextField value={valueB}
+            onChange={(event) => handleChange(event, "B")} multiline />
+        </div>
+      </div>
     </div>
   );
 }
