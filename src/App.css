@@ -6,6 +6,15 @@
   display: flex;
 }
 
-.container > * {
+.inputs {
+  display: flex;
+}
+
+.inputs > * {
   margin: 10px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
 }
