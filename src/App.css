@@ -3,18 +3,18 @@
 }
 
 .container {
-  display: flex;
-}
-
-.inputs {
-  display: flex;
-}
-
-.inputs > * {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 73px 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  max-width: 950px;
   margin: 10px;
 }
 
 .list {
   display: flex;
   flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: 4px;
 }

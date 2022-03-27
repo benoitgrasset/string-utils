@@ -6,7 +6,7 @@ const nbRows = 20;
 
 type IOperation = "intersection" | "union" | "A" | "B";
 
-const App = () => {
+const App: React.FC = () => {
   const [valueA, setValueA] = React.useState<string>("")
   const [valueB, setValueB] = React.useState<string>("")
   const [operation, setOperation] = React.useState<IOperation>('intersection')
@@ -32,14 +32,18 @@ const App = () => {
       case "intersection":
         let intersection = []
         for (let i = 0; i < listA.length; i++) {
-          if (listB.includes(listA[i])) { intersection.push(listA[i]) }
+          if (listA[i].length > 0 && listB.includes(listA[i])) {
+            intersection.push(listA[i])
+          }
         }
         return intersection
       case "union":
         let union: string[] = []
         let array = [...listA, ...listB]
         for (let i = 0; i < array.length; i++) {
-          if (!union.includes(array[i])) { union.push(array[i]) }
+          if (array[i].length > 0 && !union.includes(array[i])) {
+            union.push(array[i])
+          }
         }
         return union
       case "A":
@@ -55,40 +59,31 @@ const App = () => {
     <div className='App'>
       <h1>String utils</h1>
       <div className='container'>
-        <div className='inputs'>
-          <div>
-            <h2>Liste A</h2>
-            <TextField value={valueA}
-              onChange={(event) => handleChange(event, "A")} multiline rows={nbRows} />
-          </div>
-          <div>
-            <h2>Liste B</h2>
-            <TextField value={valueB}
-              onChange={(event) => handleChange(event, "B")} multiline rows={nbRows} />
-          </div>
-        </div>
-        <div className='outputs'>
+        <h2>Liste A</h2>
+        <h2>Liste B</h2>
+        <div>
           <ToggleButtonGroup
             color="primary"
             value={operation}
             exclusive
             onChange={handleChangeOperation}
           >
-            <ToggleButton value="intersection">Intersection</ToggleButton>
-            <ToggleButton value="union">Union</ToggleButton>
-            <ToggleButton value="A">Unique à A</ToggleButton>
-            <ToggleButton value="B">Unique à B</ToggleButton>
+            <ToggleButton value="intersection">Intersection {operation === "intersection" && "(" + result.length + ")"}</ToggleButton>
+            <ToggleButton value="union">Union {operation === "union" && "(" + result.length + ")"}</ToggleButton>
+            <ToggleButton value="A">Unique à A {operation === "A" && "(" + result.length + ")"}</ToggleButton>
+            <ToggleButton value="B">Unique à B {operation === "B" && "(" + result.length + ")"}</ToggleButton>
           </ToggleButtonGroup>
-          <div>
-            <h2>Résultat</h2>
-            <div className='list'>
-              {result.map((e, index) => {
-                return <span key={e + index}>{e}</span>
-              })}
-            </div>
-          </div>
         </div>
-      </div>
+        <TextField value={valueA}
+          onChange={(event) => handleChange(event, "A")} multiline rows={nbRows} />
+        <TextField value={valueB}
+          onChange={(event) => handleChange(event, "B")} multiline rows={nbRows} />
+        <div className='list'>
+          {result.map((e, index) => {
+            return <span key={e + index}>{e}</span>
+          })}
+        </div>
+      </div >
     </div>
   );
 }
