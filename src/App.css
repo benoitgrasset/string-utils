@@ -5,10 +5,10 @@
 .container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 73px 1fr;
+  grid-template-rows: 73px 90px 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-  max-width: 950px;
+  max-width: 970px;
   margin: 10px;
 }
 
@@ -17,4 +17,12 @@
   flex-direction: column;
   border: 1px solid rgba(0, 0, 0, 0.23);
   border-radius: 4px;
+}
+
+.button-group > * {
+  margin: 5px!important;
+}
+
+.button {
+  text-transform: none!important;
 }

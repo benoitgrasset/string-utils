@@ -1,10 +1,20 @@
 import React from 'react';
 import './App.css';
-import { TextField, ToggleButtonGroup, ToggleButton } from "@mui/material"
+import { TextField, ToggleButtonGroup, ToggleButton, Button } from "@mui/material"
 
 const nbRows = 20;
 
 type IOperation = "intersection" | "union" | "A" | "B";
+
+const flipName = (list: string): string => {
+  return list.split('\n').map(name =>
+    name.split(" ").reverse().join(" "))
+    .join('\n')
+}
+
+const alphaSort = (list: string): string => {
+  return list.split('\n').sort().join('\n')
+}
 
 const App: React.FC = () => {
   const [valueA, setValueA] = React.useState<string>("")
@@ -55,6 +65,38 @@ const App: React.FC = () => {
 
   const result = getResult() || [];
 
+  const handleLowercaseA = () => {
+    setValueA(prevValue => prevValue.toLowerCase())
+  };
+
+  const handleUppercaseA = () => {
+    setValueA(prevValue => prevValue.toUpperCase())
+  };
+
+  const handleLowercaseB = () => {
+    setValueB(prevValue => prevValue.toLowerCase())
+  };
+
+  const handleUppercaseB = () => {
+    setValueB(prevValue => prevValue.toUpperCase())
+  };
+
+  const handleFlipA = () => {
+    setValueA(prevValue => flipName(prevValue))
+  };
+
+  const handleFlipB = () => {
+    setValueB(prevValue => flipName(prevValue))
+  };
+
+  const handleSortA = () => {
+    setValueA(prevValue => alphaSort(prevValue))
+  }
+
+  const handleSortB = () => {
+    setValueB(prevValue => alphaSort(prevValue))
+  }
+
   return (
     <div className='App'>
       <h1>String utils</h1>
@@ -74,6 +116,19 @@ const App: React.FC = () => {
             <ToggleButton value="B">Unique à B {operation === "B" && "(" + result.length + ")"}</ToggleButton>
           </ToggleButtonGroup>
         </div>
+        <div className='button-group'>
+          <Button variant='outlined' className='button' onClick={handleLowercaseA}>lowercase A</Button>
+          <Button variant='outlined' className='button' onClick={handleUppercaseA}>UPPERCASE A</Button>
+          <Button variant='outlined' className='button' onClick={handleFlipA}>Flip nom et prénom</Button>
+          <Button variant='outlined' className='button' onClick={handleSortA}>Sort (A to Z)</Button>
+        </div>
+        <div className='button-group'>
+          <Button variant='outlined' className='button' onClick={handleLowercaseB}>lowercase B</Button>
+          <Button variant='outlined' className='button' onClick={handleUppercaseB}>UPPERCASE B</Button>
+          <Button variant='outlined' className='button' onClick={handleFlipB}>Flip nom et prénom</Button>
+          <Button variant='outlined' className='button' onClick={handleSortB}>Sort (A to Z)</Button>
+        </div>
+        <div></div>
         <TextField value={valueA}
           onChange={(event) => handleChange(event, "A")} multiline rows={nbRows} />
         <TextField value={valueB}
