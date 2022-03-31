@@ -2,9 +2,12 @@ import React from 'react';
 import './App.css';
 import { TextField, ToggleButtonGroup, ToggleButton, Button } from "@mui/material"
 
-const nbRows = 20;
+const nbRows = 25;
 
 type IOperation = "intersection" | "union" | "A" | "B";
+
+const labelSort = 'Sort (A to Z) ↑';
+const labelUnsort = 'Sort (Z to A) ↓';
 
 const flipName = (list: string): string => {
   return list.split('\n').map(name =>
@@ -12,14 +15,18 @@ const flipName = (list: string): string => {
     .join('\n')
 }
 
-const alphaSort = (list: string): string => {
-  return list.split('\n').sort().join('\n')
+const alphaSort = (list: string, order: "asc" | "desc"): string => {
+  return order === "asc" ?
+    list.split('\n').sort().join('\n')
+    : list.split('\n').sort().reverse().join('\n')
 }
 
 const App: React.FC = () => {
   const [valueA, setValueA] = React.useState<string>("")
   const [valueB, setValueB] = React.useState<string>("")
   const [operation, setOperation] = React.useState<IOperation>('intersection')
+  const [sortA, setSortA] = React.useState(true)
+  const [sortB, setSortB] = React.useState(true)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: "A" | "B") => {
     switch (field) {
@@ -90,11 +97,13 @@ const App: React.FC = () => {
   };
 
   const handleSortA = () => {
-    setValueA(prevValue => alphaSort(prevValue))
+    setValueA(prevValue => alphaSort(prevValue, sortA ? "asc" : "desc"))
+    setSortA(prevState => !prevState)
   }
 
   const handleSortB = () => {
-    setValueB(prevValue => alphaSort(prevValue))
+    setValueB(prevValue => alphaSort(prevValue, sortB ? "asc" : "desc"))
+    setSortB(prevState => !prevState)
   }
 
   return (
@@ -109,6 +118,8 @@ const App: React.FC = () => {
             value={operation}
             exclusive
             onChange={handleChangeOperation}
+            size="small"
+            className='toggleButtonGroup'
           >
             <ToggleButton value="intersection">Intersection {operation === "intersection" && "(" + result.length + ")"}</ToggleButton>
             <ToggleButton value="union">Union {operation === "union" && "(" + result.length + ")"}</ToggleButton>
@@ -119,14 +130,14 @@ const App: React.FC = () => {
         <div className='button-group'>
           <Button variant='outlined' className='button' onClick={handleLowercaseA}>lowercase A</Button>
           <Button variant='outlined' className='button' onClick={handleUppercaseA}>UPPERCASE A</Button>
-          <Button variant='outlined' className='button' onClick={handleFlipA}>Flip nom et prénom</Button>
-          <Button variant='outlined' className='button' onClick={handleSortA}>Sort (A to Z)</Button>
+          <Button variant='outlined' className='button' onClick={handleFlipA}>nom ⟷ prénom</Button>
+          <Button variant='outlined' className='button' onClick={handleSortA}>{sortA ? labelSort : labelUnsort}</Button>
         </div>
         <div className='button-group'>
           <Button variant='outlined' className='button' onClick={handleLowercaseB}>lowercase B</Button>
           <Button variant='outlined' className='button' onClick={handleUppercaseB}>UPPERCASE B</Button>
-          <Button variant='outlined' className='button' onClick={handleFlipB}>Flip nom et prénom</Button>
-          <Button variant='outlined' className='button' onClick={handleSortB}>Sort (A to Z)</Button>
+          <Button variant='outlined' className='button' onClick={handleFlipB}>nom ⟷ prénom</Button>
+          <Button variant='outlined' className='button' onClick={handleSortB}>{sortB ? labelSort : labelUnsort}</Button>
         </div>
         <div></div>
         <TextField value={valueA}
